@@ -1,0 +1,116 @@
+// Variaveis do grid
+$cols: 12;
+$gutter: 20px;
+$l-dev: 1200px;
+$m-dev: 760px;
+$s-dev: 480px;
+
+// Box-sizing
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+// Mixin de media-queries
+@mixin d($size) {
+  @if $size == l {
+    @media screen and (min-width: #{$l-dev}) {
+      @content;
+    }
+  } @else if $size == m {
+    @media screen and (min-width: #{$m-dev}) and (max-width: $l-dev - 1) {
+      @content;
+    }
+  } @else if $size == s {
+    @media screen and (max-width: $m-dev - 1) {
+      @content;
+    }
+  }
+}
+
+//Função do grid
+@function grid($col, $offset: false) {
+  $width: $col / $cols * 100 + "%";
+  $result: calc(#{$width} - #{$gutter});
+  @if $offset == offset {
+    $gutter: $gutter / 2;
+    $result: calc(#{$width} + #{$gutter});
+  }
+  @return $result;
+}
+
+//Gerando as classes de grid
+@for $k from 1 through $cols {
+  .grid-#{$k} {
+    width: grid($k);
+  }
+}
+
+//Mixin estrutural
+@mixin grid-structure {
+  float: left;
+
+  min-height: 1px;
+
+  margin-left: $gutter / 2;
+  margin-right: $gutter / 2;
+  @include d(s) {
+    width: 100%;
+    float: none;
+
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+[class^="grid-"] {
+  @include grid-structure
+}
+
+//Gerando as classes de offset
+@for $k from 1 through $cols {
+  .offset-#{$k} {
+    margin-left: grid($k, offset);
+    @extend %offset;
+  }
+}
+
+@include d(s) {
+  %offset {
+    margin-left: 0;
+  }
+}
+
+//Mixin de clearfix
+@mixin clearfix {
+  &::before, &::after {
+    content: '';
+    display: table;
+  }
+  &::after {
+    clear: both;
+  }
+}
+
+//Mixin container
+@mixin container {
+  max-width: $l-dev;
+  margin: 0 auto;
+  position: relative;
+
+  @include d(m){
+    max-width: $m-dev;
+  }
+  @include d(s) {
+    max-width: $s-dev;
+    margin-inline: 10px;
+  }
+  @include clearfix;
+}
+
+.container {
+  @include container;
+}
