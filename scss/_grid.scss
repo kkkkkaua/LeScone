@@ -106,11 +106,26 @@ $s-dev: 480px;
   }
   @include d(s) {
     max-width: $s-dev;
-    margin-inline: 10px;
+    padding-inline: 10px;
   }
   @include clearfix;
 }
 
 .container {
   @include container;
+}
+
+@mixin row {
+  margin-inline: -$gutter/2;
+  
+  position: relative;
+  
+  @include d(s){
+    margin-inline: 0;
+  }
+  @include clearfix;
+}
+
+.row {
+  @include row;
 }

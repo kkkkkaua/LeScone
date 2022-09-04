@@ -189,7 +189,7 @@ table {
 @media screen and (max-width: 759px) {
   .container {
     max-width: 480px;
-    margin-inline: 10px;
+    padding-inline: 10px;
   }
 }
 .container::before, .container::after {
@@ -197,5 +197,22 @@ table {
   display: table;
 }
 .container::after {
+  clear: both;
+}
+
+.row {
+  margin-inline: -10px;
+  position: relative;
+}
+@media screen and (max-width: 759px) {
+  .row {
+    margin-inline: 0;
+  }
+}
+.row::before, .row::after {
+  content: "";
+  display: table;
+}
+.row::after {
   clear: both;
 }/*# sourceMappingURL=style.css.map */
